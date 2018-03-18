@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Support App ZKTeco DEMO',
       theme: new ThemeData(
         // This is the theme of your application.
         //
@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
         // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new MyHomePage(title: 'Chat Support App ZKTeco - DEMO'),
     );
   }
 }
@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
+        resizeToAvoidBottomPadding: false,
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -87,22 +88,93 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            new Text(
-              'You have pushed the button this many times:',
+            new ListTile(
+              leading: const Icon(Icons.person),
+              title: new TextField(
+                decoration: new InputDecoration(
+                  hintText: "First Name",
+                ),
+              ),
             ),
-            new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            new ListTile(
+              leading: const Icon(Icons.person),
+              title: new TextField(
+                decoration: new InputDecoration(
+                  hintText: "Last Name",
+                ),
+              ),
+            ),
+            new ListTile(
+              leading: const Icon(Icons.email),
+              title: new TextField(
+                decoration: new InputDecoration(
+                  hintText: "E-Mail",
+                ),
+              ),
+            ),
+            new ListTile(
+              leading: const Icon(Icons.phone),
+              title: new TextField(
+                decoration: new InputDecoration(
+                    hintText: "Phone Number",
+                ),
+              ),
+            ),
+            new ListTile(
+              leading: const Icon(Icons.flag),
+              title: new DropdownButton<String>(
+                  value:'Argentina',
+                  hint: new Text('Select a country'),
+                  items: <String>['Argentina', 'Brazil', 'Republica Dominicana', 'Chile', 'Uruguay', 'Mexico'].map((String value) {
+                    return new DropdownMenuItem<String>(
+                      value: value,
+                      child: new Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (_) {}
+              ),
+            ),
+            new ListTile(
+              leading: const Icon(Icons.business),
+              title: new TextField(
+                decoration: new InputDecoration(
+                  hintText: "Provider",
+                ),
+              ),
+            ),
+            new ListTile(
+              leading: const Icon(Icons.assignment),
+              title: new DropdownButton<String>(
+                  value:'Attendace software',
+                  hint: new Text('Select a reason'),
+                  items: <String>['Hardware', 'Firmware', 'Attendace software'].map((String value) {
+                    return new DropdownMenuItem<String>(
+                      value: value,
+                      child: new Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (_) {}
+              ),
+            ),
+            new ListTile(
+              leading: const Icon(Icons.text_fields),
+              title: new TextField(
+                decoration: new InputDecoration(
+                  hintText: "Description",
+                ),
+              ),
             ),
           ],
         ),
       ),
+
       floatingActionButton: new FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
+        tooltip: 'New Question',
+        child: new Icon(Icons.send),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
