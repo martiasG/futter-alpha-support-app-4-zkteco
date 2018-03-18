@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() => runApp(new MyApp());
 
@@ -43,17 +45,64 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final TextEditingController _controllerFirstName = new TextEditingController();
+  final TextEditingController _controllerLasttName = new TextEditingController();
+  final TextEditingController _controllerEmail = new TextEditingController();
+  final TextEditingController _controllerPhone = new TextEditingController();
+  final TextEditingController _controllerDescription = new TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
+  void _incrementCounter() async{
+    var url = 'http://httpbin.org/post';
+    http.post(url, body: JSON.encode(
+       {'agent': 'ZK_Center',
+         'intfVer':'1.0.0',
+         'lang':'zh-CN',
+         'plataform':'zkweb',
+         'sessionId':'b5f3262f-804b-4580-946e-4d984480ebcf',
+         'sys':'ZK_Center',
+         'tz':'+8:00',
+         'payload':{
+          'params' : {
+            'id':'',
+            'name':_controllerFirstName.text,
+            'lastName':_controllerLasttName.text,
+            'email':_controllerEmail.text,
+            'phone':_controllerPhone.text,
+            'countryName':'Argentina',
+            'supplier':'ZKteco',
+            'category':'SDK',
+            'serialNumber':'',
+            'software':'',
+            'questTitle':'SDK doc',
+            'problemDesc':_controllerDescription.text,
+          }
+         }
+       })).then((response) {
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+      if(response.statusCode == 200) {
+        showDialog(
+          context: context,
+          child: new AlertDialog(
+            content: new Text("Message sent successfully"),
+          ),
+        );
+      }else{
+        showDialog(
+          context: context,
+          child: new AlertDialog(
+            content: new Text("There was a error, please try latter."),
+          ),
+        );
+      }
+    });
+//    setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+//    });
   }
 
   @override
@@ -65,13 +114,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false,
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: new Text(widget.title),
       ),
-      body: new Center(
+      body: new Container(
+        padding: new EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: new Column(
@@ -94,7 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
             new ListTile(
               leading: const Icon(Icons.person),
               title: new TextField(
-                decoration: new InputDecoration(
+                  controller: _controllerFirstName,
+                  decoration: new InputDecoration(
                   hintText: "First Name",
                 ),
               ),
@@ -102,7 +153,8 @@ class _MyHomePageState extends State<MyHomePage> {
             new ListTile(
               leading: const Icon(Icons.person),
               title: new TextField(
-                decoration: new InputDecoration(
+                controller: _controllerLasttName,
+                  decoration: new InputDecoration(
                   hintText: "Last Name",
                 ),
               ),
@@ -110,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
             new ListTile(
               leading: const Icon(Icons.email),
               title: new TextField(
+                controller: _controllerEmail,
                 decoration: new InputDecoration(
                   hintText: "E-Mail",
                 ),
@@ -118,51 +171,54 @@ class _MyHomePageState extends State<MyHomePage> {
             new ListTile(
               leading: const Icon(Icons.phone),
               title: new TextField(
+                controller: _controllerPhone,
                 decoration: new InputDecoration(
                     hintText: "Phone Number",
                 ),
               ),
             ),
-            new ListTile(
-              leading: const Icon(Icons.flag),
-              title: new DropdownButton<String>(
-                  value:'Argentina',
-                  hint: new Text('Select a country'),
-                  items: <String>['Argentina', 'Brazil', 'Republica Dominicana', 'Chile', 'Uruguay', 'Mexico'].map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (_) {}
-              ),
-            ),
-            new ListTile(
-              leading: const Icon(Icons.business),
-              title: new TextField(
-                decoration: new InputDecoration(
-                  hintText: "Provider",
-                ),
-              ),
-            ),
-            new ListTile(
-              leading: const Icon(Icons.assignment),
-              title: new DropdownButton<String>(
-                  value:'Attendace software',
-                  hint: new Text('Select a reason'),
-                  items: <String>['Hardware', 'Firmware', 'Attendace software'].map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (_) {}
-              ),
-            ),
+//            new ListTile(
+//              leading: const Icon(Icons.flag),
+//              title: new DropdownButton<String>(
+//                  value:'Argentina',
+//                  hint: new Text('Select a country'),
+//                  items: <String>['Argentina', 'Brazil', 'Republica Dominicana', 'Chile', 'Uruguay', 'Mexico'].map((String value) {
+//                    return new DropdownMenuItem<String>(
+//                      value: value,
+//                      child: new Text(value),
+//                    );
+//                  }).toList(),
+//                  onChanged: (_) {}
+//              ),
+//            ),
+//            new ListTile(
+//              leading: const Icon(Icons.business),
+//              title: new TextField(
+//                decoration: new InputDecoration(
+//                  hintText: "Provider",
+//                ),
+//              ),
+//            ),
+//            new ListTile(
+//              leading: const Icon(Icons.assignment),
+//              title: new DropdownButton<String>(
+//                  value:'Attendace software',
+//                  hint: new Text('Select a reason'),
+//                  items: <String>['Hardware', 'Firmware', 'Attendace software'].map((String value) {
+//                    return new DropdownMenuItem<String>(
+//                      value: value,
+//                      child: new Text(value),
+//                    );
+//                  }).toList(),
+//                  onChanged: (_) {}
+//              ),
+//            ),
             new ListTile(
               leading: const Icon(Icons.text_fields),
               title: new TextField(
-                decoration: new InputDecoration(
+                  controller: _controllerDescription,
+                  maxLines: 5,
+                  decoration: new InputDecoration(
                   hintText: "Description",
                 ),
               ),
